@@ -18,6 +18,7 @@
 		overflow:auto;
 		height:200px;
 		background:#EEE;
+		font-size: 60%;
 	}
 	
 </style>
@@ -87,6 +88,7 @@ $(function(){
 		setInterval(function(){
 				//$('#status').text("step number "+automa.steps+" last step changed "+automa.lastChanged+" cells, checking "+automa.lastTestedRules+" rules, cells are "+JSON.stringify(automa.cells)+" desc: "+automa.description);
 				automa.step();
+				document.title='Step '+automa.steps+' of JSON live automaton';
 				automa.canvasDump(canvas);
 				compileRun();
 			},1000);

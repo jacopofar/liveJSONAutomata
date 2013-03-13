@@ -1,3 +1,37 @@
+/*
+ * Distributed under the BSD license:
+ *
+ * Copyright (c) 2013, Jacopo Farina
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * * Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above
+ *   copyright notice, this list of conditions and the following disclaimer
+ *   in the documentation and/or other materials provided with the
+ *   distribution.
+ * * Neither the name of the  nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ */
+
 function AONexecute(code,automata,consoleselector){
 	try{
 		var parsed=JSON.parse(code);
@@ -53,7 +87,7 @@ function AONexecute(code,automata,consoleselector){
  * NOTE: a cell
  * 
  * */
-function Automata(h,w){
+function Automata(w,h){
 	//alert("sono un Automa, sto venendo instanziato!");
 	this.cells={};
 	this.rules={};
@@ -65,7 +99,7 @@ function Automata(h,w){
 	this.height=h;
 	this.width=w;
 	this.log=function(message){
-		//$('#console').append(message+"<br />");
+		$('#console').append(message+"<br />");
 	}
 	this.getCellStatus=function(x,y){
 		x=x%this.width;
@@ -131,7 +165,8 @@ function Automata(h,w){
 		}
 		//now increaseCells contains the default cells to be checked within the usual non-default cells
 		//let's add to increaseCells the real cells
-		for (var coord in this.cells) { increaseCells[coord]=this.cells[coord]; }
+		for (var coord in this.cells) { increaseCells[coord]=this.cells[coord];}
+		var updcoordx=[],updcoordy=[],upstatuses=[];
 		//alert(JSON.stringify(this));
 		//$.each(this.rules, function(ID, ruleraw) {
 		for(var ir=0;ir<Object.keys(this.rules).length;ir++){
@@ -165,11 +200,18 @@ function Automata(h,w){
 					//if ApplyThis is still true, the rule has to be applied
 				if(applyThis){
 					this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newStatus+" as an effect of rule "+ID);
-					this.setCellStatus(cellCoord[0],cellCoord[1],rule.newstatus);
+					//WE DO NOT CHANGE THE STATUS HERE, or it could affect other rules evaluation
+					//we save it to an array and apply all updates at the end to avoid conflicts
+					updcoordx.push(cellCoord[0]);
+					updcoordy.push(cellCoord[1]);
+					upstatuses.push(rule.newstatus);
 					this.lastChanged++;
 				}
 			}
 		}
+		//update all cells
+		for(var i=0;i<updcoordx.length;i++)
+			this.setCellStatus(updcoordx[i],updcoordy[i],upstatuses[i]);
 	};
 	
 	this.setPalette=function(status,color){
@@ -179,7 +221,6 @@ function Automata(h,w){
 	this.setRule=function(rule){
 		//We want to append or overwrite the rule with the same ID
 		this.rules[rule.ID]=rule;
-		//$('#console').append("setRule-passo numero "+this.steps+", le regole sono "+JSON.stringify(this.rules)+"<br />");
 	};
 	
 	this.canvasDump=function(canvas){
