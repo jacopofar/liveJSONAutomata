@@ -172,8 +172,10 @@ function Automata(w,h){
 		for(var ir=0;ir<Object.keys(this.rules).length;ir++){
 			var ID=Object.keys(this.rules)[ir];
 			var rule=this.rules[ID];
-			if(rule.timerange[0]>this.steps || rule.timerange[1]<this.steps)
-				return;
+			if(rule.timerange){
+				if(rule.timerange[0]>this.steps || rule.timerange[1]<this.steps)
+					return;
+			}
 			this.lastTestedRules++;
 			//the timerange is valid, let's iterate over cells with the desired status
 			var matchStatus=rule.applyTo;

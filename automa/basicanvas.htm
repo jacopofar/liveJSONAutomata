@@ -33,28 +33,37 @@
 <script src="AONInterpreter.js"></script>
 
 <pre id="editor">{
-"comment":"example automa, a Sierpinski triangle",
+"comment":"the Stephen Wolfram's rule 30 automa",
 "cells":[
-	{"x":300,"y":10,"status":"active cell","timerange":[1,2300]}
+	{"x":200,"y":10,"status":"active cell","timerange":[1,2300]}
 ],
 "palette":[
-	{"status":"active cell","color":"rgb(250,10,10)","timerange":[1,2300]},
+	{"status":"active cell","color":"rgb(250,10,10)","timerange":[1,20]},
+	{"status":"active cell","color":"rgb(10,250,10)","timerange":[21,40]},
+	{"status":"active cell","color":"rgb(10,250,250)","timerange":[41,9000]},
 	{"status":"default","color":"white","timerange":[1,2300]}
 ],
 "rules":[
 {"ID":"left",
-"timerange":[1,2300],
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
 "newstatus":"active cell"
 },
 {"ID":"right",
-"timerange":[1,2300],
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
 "newstatus":"active cell"
+},
+{"ID":"center",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"default"}],
+"newstatus":"active cell"
+},
+{"ID":"center and left",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"active cell"}],
+"newstatus":"active cell"
 }
-
 ]
 }</pre>
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -85,13 +94,17 @@ $(function(){
 		//let's add a listener for editor content changes
 		var editsession = ace.edit("editor").getSession().addEventListener('change',compileRun);
 		//let's add canvas to show the automata status
+		var running=false;
 		setInterval(function(){
 				//$('#status').text("step number "+automa.steps+" last step changed "+automa.lastChanged+" cells, checking "+automa.lastTestedRules+" rules, cells are "+JSON.stringify(automa.cells)+" desc: "+automa.description);
+				if(running)return;
+				running=true;
 				automa.step();
 				document.title='Step '+automa.steps+' of JSON live automaton';
 				automa.canvasDump(canvas);
 				compileRun();
-			},1000);
+				running=false;
+			},300);
 	} else {
 		alert("Canvas element not found. Are you using an old browser?");
 	}
