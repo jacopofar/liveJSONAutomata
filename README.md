@@ -11,7 +11,8 @@ JSON syntax
 -----------
 The syntax is simple, see this example:
 
-`{
+```json
+{
 "comment":"example automa, a Sierpinski triangle",
 "cells":[
 	{"x":300,"y":10,"status":"active cell","timerange":[12,2300]}
@@ -35,11 +36,15 @@ The syntax is simple, see this example:
 }
 
 ]
-}`
+}
+```
 
 At each step, the code will be evaluated and applied.
 
-The `cell` key defines an array of cells with a status, in this case the status is `active cell` (you can use any character and whitespaces). Each cell has a timerange, in this case the cell will be created at step number `12` and removed at step number `2300`. Please note that the cell will not be changed when the line is not in the edit box. So, if you remove the line before the step 2300 the cell will stay there, and if you remove it before the step `12` it will never be created. This value also override automaton evolution, so if some rule changes the status of the cell, it will not be changed (to be correct, it will be changed and then changed set at the next step). Is possible to define various states for the same cell in different times, the behavior in case of overlapping is not defined.
+
+The `cell` key defines an array of cells with a status, in this case the status is `active cell` (you can use any character and whitespaces). Each cell has a timerange, in this case the cell will be created at step number `12` and removed at step number `2300`. Please note that the cell will not be changed when the line is not in the edit box. So, if you remove the line before the step 2300 the cell will stay there, and if you remove it before the step `12` it will never be created.
+
+This value also override automaton evolution, so if some rule changes the status of the cell, it will not be changed (to be correct, it will be changed and then changed set at the next step). Is possible to define various states for the same cell in different times, the behavior in case of overlapping is not defined.
 
 The `palette` key tells how to represent statuses with colors. The `default` state is the one applied when the call has no value. All cells are in default state if not defined otherwise by rules.
 
@@ -50,11 +55,13 @@ A rule is applied until is overridden by another rule with the same ID or the `t
 Turing completeness
 -------------------
 The automaton is Turing-complete. If we consider a row in the cell matrix as the strip of tape, cell statuses as Turing machine statuses and define rules changing a row based on the row above, we have a Turing machine where the N row represent the N step.
+
 I would not use it for writing a database, thought.
 
 License
 -------
 The code is released under BSD license, you can freely use, copy, study and modify it as defined in the note inside the script.
+
 The JSON editor is based on ACE AJAX editor, see http://ace.ajax.org/ 
 
 TODO
