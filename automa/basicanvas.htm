@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Cellular Automata executor</title>
+<style type="text/css" media="screen">
+	body{
+		background:#DDD;
+	}
+	#editor { 
+		margin: 2;
+		height:200px;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	#console { 
+		overflow:auto;
+		height:200px;
+		background:#EEE;
+	}
+	
+</style>
+</head>
+<body>
+<span id ="hint">Write Automata JSON description code inside the editor to change it live:</span><br/>
+<canvas id="target_canvas" width="600" height="400">
+</canvas>
+<div id="console"></div><br />
+<span id="status"></span>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="AONInterpreter.js"></script>
+
+<pre id="editor">{
+"comment":"example automa, a Sierpinski triangle",
+"cells":[
+	{"x":300,"y":10,"status":"active cell","timerange":[1,2300]}
+],
+"palette":[
+	{"status":"active cell","color":"rgb(250,10,10)","timerange":[1,2300]},
+	{"status":"default","color":"white","timerange":[1,2300]}
+],
+"rules":[
+{"ID":"left",
+"timerange":[1,2300],
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
+"newstatus":"active cell"
+},
+{"ID":"right",
+"timerange":[1,2300],
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
+"newstatus":"active cell"
+}
+
+]
+}</pre>
+<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    //editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/json");
+</script>
+
+<script type="text/javascript">
+if (typeof jQuery == 'undefined'){
+	window.alert("can't see jQuery, do you have a connection?");
+}
+
+//this function will be called when the automa code changes
+var compileRun=function(){
+	var currentCode=ace.edit("editor").getSession().getValue();
+	AONexecute(currentCode,automa,'#console');
+	//ctx.fillText(ace.edit("editor").getSession().getValue(), 248, 43);
+};
+
+$(function(){
+	var canvas = document.getElementById('target_canvas');
+	//global variable to store the automata
+	automa=new Automata(600,400);
+	compileRun();
+	if (canvas.getContext){
+		//let's add a listener for editor content changes
+		var editsession = ace.edit("editor").getSession().addEventListener('change',compileRun);
+		//let's add canvas to show the automata status
+		setInterval(function(){
+				//$('#status').text("step number "+automa.steps+" last step changed "+automa.lastChanged+" cells, checking "+automa.lastTestedRules+" rules, cells are "+JSON.stringify(automa.cells)+" desc: "+automa.description);
+				automa.step();
+				automa.canvasDump(canvas);
+				compileRun();
+			},1000);
+	} else {
+		alert("Canvas element not found. Are you using an old browser?");
+	}
+});
+</script>
+<span>The nice editor is based on the fantastic <a href="http://ace.ajax.org/">ACE editor</a>, using ASCII mode</span>
+</body>
+</html>
