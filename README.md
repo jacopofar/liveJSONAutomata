@@ -68,6 +68,6 @@ TODO
 ----
 The program has a lot of improvements to be done:
 * start/stop/pause button
-* improve speed and memory usage
+* improve speed and memory usage (now terrible)
 * testing on different browsers (not only Chrome)
 * better code comments
