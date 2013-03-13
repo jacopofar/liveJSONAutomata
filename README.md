@@ -70,3 +70,4 @@ The program has a lot of improvements to be done:
 * start/stop/pause button
 * improve speed and memory usage
 * testing on different browsers (not only Chrome)
+* better code comments
