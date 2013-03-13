@@ -199,7 +199,7 @@ function Automata(w,h){
 				}
 					//if ApplyThis is still true, the rule has to be applied
 				if(applyThis){
-					this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newStatus+" as an effect of rule "+ID);
+					this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newstatus+" as an effect of rule "+ID);
 					//WE DO NOT CHANGE THE STATUS HERE, or it could affect other rules evaluation
 					//we save it to an array and apply all updates at the end to avoid conflicts
 					updcoordx.push(cellCoord[0]);
