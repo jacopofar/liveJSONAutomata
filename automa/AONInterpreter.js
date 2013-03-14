@@ -154,8 +154,9 @@ function Automata(w,h){
 		}
 		//now maxXdistance and maxYdistance givce the amount of default cells to generate
 		var increaseCells={};
-		for(var cind=0;cind<Object.keys(this.cells).length;cind++){
-			var cellCoord=Object.keys(this.cells)[cind].split(',');
+		var cellCoords=Object.keys(this.cells);
+		for(var cind=0;cind<cellCoords.length;cind++){
+			var cellCoord=cellCoords[cind].split(',');
 			cellCoord[0]=parseInt(cellCoord[0], 10);
 			cellCoord[1]=parseInt(cellCoord[1], 10);
 			//we have the coordinates of a non-default cell
@@ -172,8 +173,9 @@ function Automata(w,h){
 		var updcoordx=[],updcoordy=[],upstatuses=[];
 		//alert(JSON.stringify(this));
 		//$.each(this.rules, function(ID, ruleraw) {
-		for(var ir=0;ir<Object.keys(this.rules).length;ir++){
-			var ID=Object.keys(this.rules)[ir];
+		var rulesIDs=Object.keys(this.rules);
+		for(var ir=0;ir<rulesIDs.length;ir++){
+			var ID=rulesIDs[ir];
 			var rule=this.rules[ID];
 			if(rule.timerange){
 				if(rule.timerange[0]>this.steps || rule.timerange[1]<this.steps)
@@ -226,7 +228,7 @@ function Automata(w,h){
 		this.rules[rule.ID]=rule;
 	};
 	
-	//draw this automata to a HTML5 Canvas, it will use the whole canvas
+	//draw this automata to a HTML5 Canvas
 	this.canvasDump=function(canvas){
 		var ctx=canvas.getContext('2d');
 		var width=canvas.width;

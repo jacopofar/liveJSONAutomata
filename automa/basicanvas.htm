@@ -35,7 +35,9 @@
 <pre id="editor">{
 "comment":"the Stephen Wolfram's rule 30 automa",
 "cells":[
-	{"x":150,"y":10,"status":"active cell","timerange":[1,2300]}
+	{"x":150,"y":10,"status":"active cell","timerange":[1,10]},
+	{"x":110,"y":10,"status":"active cell","timerange":[1,10]},
+	{"x":130,"y":180,"status":"active cell","timerange":[1,10]}
 ],
 "palette":[
 	{"status":"active cell","color":"#FF1010","timerange":[1,20]},
@@ -96,7 +98,7 @@ $(function(){
 		var editsession = ace.edit("editor").getSession().addEventListener('change',compileRun);
 		//let's add canvas to show the automata status
 		var running=false;
-		setInterval(function(){
+		var ciclicCall=function(){
 				//$('#status').text("step number "+automa.steps+" last step changed "+automa.lastChanged+" cells, checking "+automa.lastTestedRules+" rules, cells are "+JSON.stringify(automa.cells)+" desc: "+automa.description);
 				if(running)return;
 				running=true;
@@ -105,7 +107,8 @@ $(function(){
 				automa.canvasDump(canvas);
 				compileRun();
 				running=false;
-			},300);
+			};
+		setInterval(ciclicCall,800);
 	} else {
 		alert("Canvas element not found. Are you using an old browser?");
 	}
