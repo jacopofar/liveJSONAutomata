@@ -1,9 +1,9 @@
 liveJSONAutomata
 ================
 
-An HTML5 cellular automaton simulator able to change rules on the fly, made for March 2013 PLT Games "do it live"
+An in-browser cellular automaton simulator able to change rules on the fly, made for March 2013 PLT Games "do it live".
 
-A cellular automaton is a grid of cells where each cell has a *status* and there are some rules to change the status of a cell based on the statuses of neighbours and of the cell itself, in discrete time.
+A cellular automaton is a grid of cells where each cell has a *status* and there are some rules to change the status of a cell based on the statuses of neighbours and of the cell itself, in a discrete time.
 This script uses a cellular automaton description in a JSON object, and calculate it step after step.
 Not only you can write rules in a glance using a simple JSON syntax, but you can change them __live__, that is, if you change a rule in the text area it will be applied to the current automaton, with the current cell statuses. You can both add rules and update already existing ones.
 
@@ -55,8 +55,8 @@ A rule is applied until is overridden by another rule with the same ID or the `t
 Turing completeness
 -------------------
 The automaton is Turing-complete. If we consider a row in the cell matrix as the strip of tape, cell statuses as Turing machine statuses and define rules changing a row based on the row above, we have a Turing machine where the N row represent the N step.
+The head of the machine can be represented with an ad-hoc a cell status or a set of cell statuses.
 
-I would not use it for writing a database, thought.
 
 License
 -------
@@ -69,5 +69,4 @@ TODO
 The program has a lot of improvements to be done:
 * start/stop/pause button
 * improve speed and memory usage (now terrible)
-* testing on different browsers (not only Chrome)
-* better code comments
+* testing on different browsers (for now only Chrome and Firefox)
