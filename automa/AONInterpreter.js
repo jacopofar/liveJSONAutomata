@@ -83,11 +83,9 @@ function AONexecute(code,automata,consoleselector){
  * The status of an undefined cell is "default".
  * At each step, it checks also default cells at a certain distance from a non-default one
  * that distance is decided from rules: the maximum distance used by a rule bond is used to check default cells
- * NOTE: a cell
  * 
  * */
 function Automata(w,h){
-	//alert("sono un Automa, sto venendo instanziato!");
 	this.cells={};
 	this.rules={};
 	this.steps=0;
