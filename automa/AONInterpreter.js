@@ -90,27 +90,31 @@ function Automata(w,h){
 	this.rules={};
 	this.steps=0;
 	this.palette={};
-	this.lastChanged=0;
-	this.lastTestedRules=0;
 	this.height=h;
 	this.width=w;
+	//show some string message to the user
 	this.log=function(message){
 		$('#console').append(message+"<br />");
-	}
+	};
+	
+	//get the cell status if defined. The automa grid is toroidal, it overlaps in every direction
 	this.getCellStatus=function(x,y){
 		x=x%this.width;
 		y=y%this.height;
 		return this.cells[[x,y]];
 	};
 	
+	//set the cell status. If the coordinates are outside the grid, they are translated using modulo
 	this.setCellStatus=function(x,y,status){
 		this.cells[[x%this.width,y%this.height]]=status;
 	};
 	
+	//get the CSS color bound to a status
 	this.getColor=function(status){
 		return this.palette[status];
 	};
 	
+	//calculate the new status applying the rules
 	this.step=function(){
 		this.log("step number "+this.steps+", cells: "+JSON.stringify(this.cells));
 		this.steps++;
@@ -130,9 +134,6 @@ function Automata(w,h){
 		* 2 - the cell status, so we can iterate over cells with that status
 		* 3 - the neighbours, for each cell with that status
 		* */
-		//debugging variables
-		this.lastChanged=0;
-		this.lastTestedRules=0;
 		//what is the maximum distance to check required by a rule? So we can use a sparse matrix generating the minimum number of 'default' cells
 		var maxXdistance=1;
 		var maxYdistance=1;
@@ -172,7 +173,6 @@ function Automata(w,h){
 				if(rule.timerange[0]>this.steps || rule.timerange[1]<this.steps)
 					return;
 			}
-			this.lastTestedRules++;
 			//the timerange is valid, let's iterate over cells with the desired status
 			var matchStatus=rule.applyTo;
 			for(var cind=0;cind<Object.keys(increaseCells).length;cind++){
@@ -203,7 +203,6 @@ function Automata(w,h){
 					updcoordx.push(cellCoord[0]);
 					updcoordy.push(cellCoord[1]);
 					upstatuses.push(rule.newstatus);
-					this.lastChanged++;
 				}
 			}
 		}
@@ -211,16 +210,17 @@ function Automata(w,h){
 		for(var i=0;i<updcoordx.length;i++)
 			this.setCellStatus(updcoordx[i],updcoordy[i],upstatuses[i]);
 	};
-	
+	//bound a CSS color value to a cell status
 	this.setPalette=function(status,color){
 		this.palette[status]=color;
 	};
 	
+	//set a rule. It will override already existing ones having the same ID
 	this.setRule=function(rule){
-		//We want to append or overwrite the rule with the same ID
 		this.rules[rule.ID]=rule;
 	};
 	
+	//draw this automata to a HTML5 Canvas, it will use the whole canvas
 	this.canvasDump=function(canvas){
 		var ctx=canvas.getContext('2d');
 		var width=canvas.width;
