@@ -44,16 +44,19 @@
 <p id="hint" style="clear: both;">Write Automaton JSON description code inside the editor to change it live:</p>
 <div id="editorbox">
 <pre id="editor">{
-"comment":"the Stephen Wolfram's rule 30 automa",
+"comment":"the Stephen Wolfram's rule 30 automa, with animations",
 "cells":[
-	{"x":150,"y":10,"status":"active cell","timerange":[1,10]},
-	{"x":110,"y":10,"status":"active cell","timerange":[1,10]},
-	{"x":130,"y":180,"status":"active cell","timerange":[1,10]}
+	{"x":150,"y":20,"status":"active cell","timerange":[1,10]},
+	{"x":110,"y":20,"status":"active cell","timerange":[1,10]},
+	{"x":130,"y":180,"status":"active cell","timerange":[1,10]},
+	{"x":130,"y":120,"status":"active cell 2","timerange":[80,-1]}
 ],
 "palette":[
 	{"status":"active cell","color":"#FF1010","timerange":[1,20]},
 	{"status":"active cell","color":"#008302","timerange":[21,40]},
 	{"status":"active cell","color":"#FF2EF3","timerange":[41,9000]},
+	{"status":"active cell 2","color":"#FAB500"},
+	{"status":"hole","color":"#000000"},
 	{"status":"default","color":"white"}
 ],
 "rules":[
@@ -61,49 +64,61 @@
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
 "newstatus":"active cell",
-"timerange":[1,40]
+"timerange":[1,80]
 },
 {"ID":"right downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
 "newstatus":"active cell",
-"timerange":[1,40]
+"timerange":[1,80]
 },
 {"ID":"center downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"default"}],
 "newstatus":"active cell",
-"timerange":[1,40]
+"timerange":[1,80]
 },
 {"ID":"center and left downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"active cell"}],
 "newstatus":"active cell",
-"timerange":[1,40]
+"timerange":[1,80]
+},
+{"ID":"seeder for the second phase",
+"applyTo":"default",
+"neighbours":[{"rpos":[0,3],"status":"active cell"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
 },
 {"ID":"left upward",
 "applyTo":"default",
-"neighbours":[{"rpos":[-1,1],"status":"active cell"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"default"}],
-"newstatus":"active cell",
+"neighbours":[{"rpos":[-1,1],"status":"active cell 2"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell 2",
 "timerange":[41,-1]
 },
 {"ID":"right upward",
 "applyTo":"default",
-"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"active cell"}],
-"newstatus":"active cell",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"active cell 2",
 "timerange":[41,-1]
 },
 {"ID":"center upward",
 "applyTo":"default",
-"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell"},{"rpos":[1,1],"status":"default"}],
-"newstatus":"active cell",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell 2"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell 2",
 "timerange":[41,-1]
 },
 {"ID":"center and left upward",
 "applyTo":"default",
-"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell"},{"rpos":[1,1],"status":"active cell"}],
-"newstatus":"active cell",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell 2"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"active cell 2",
 "timerange":[41,-1]
+},
+{"ID":"create hole",
+"applyTo":"active cell 2",
+"neighbours":[{"rpos":[-1,1],"status":"active cell 2"},{"rpos":[-1,-1],"status":"active cell 2"},{"rpos":[-1,-1],"status":"active cell 2"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"hole",
+"timerange":[100,-1]
 }
 ]
 }</pre>
@@ -146,7 +161,7 @@ $(function(){
 				compileRun();
 				running=false;
 			};
-		setInterval(ciclicCall,1000);
+		setInterval(ciclicCall,800);
 	} else {
 		alert("Canvas element not found. Are you using an old browser?");
 	}
