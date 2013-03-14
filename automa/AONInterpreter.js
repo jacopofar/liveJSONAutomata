@@ -89,7 +89,6 @@ function Automata(w,h){
 	this.cells={};
 	this.rules={};
 	this.steps=0;
-	this.description="dunno";
 	this.palette={};
 	this.lastChanged=0;
 	this.lastTestedRules=0;
