@@ -37,10 +37,9 @@ function AONexecute(code,automata,consoleselector){
 		var parsed=JSON.parse(code);
 	}
 	catch (errobj){
-			$(consoleselector).text("PARSING ERROR: "+errobj);
+			$(consoleselector).text("JSON PARSING ERROR: "+errobj);
 			return;
 		}
-	automata.description=code;
 	//CELLS
 	if(parsed.cells){
 		var cells=parsed.cells;
