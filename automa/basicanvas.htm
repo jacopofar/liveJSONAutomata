@@ -6,9 +6,10 @@
 	body{
 		background:#DDD;
 	}
-	#editor { 
-		margin: 2;
-		height:200px;
+	#editor {
+		clear: both;
+		margin: 2em;
+		height:300px;
 		top: 0;
 		bottom: 0;
 		left: 0;
@@ -16,22 +17,28 @@
 	}
 	#console { 
 		overflow:auto;
+		float:right;
+		width:50%;
 		height:200px;
 		background:#EEE;
 		font-size: 60%;
+	}
+	#target_canvas{
+		float:left;
+		border:1px solid blue;
 	}
 	
 </style>
 </head>
 <body>
-<span id ="hint">Write Automata JSON description code inside the editor to change it live:</span><br/>
+
 <canvas id="target_canvas" width="600" height="400">
 </canvas>
 <div id="console"></div><br />
-<span id="status"></span>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="AONInterpreter.js"></script>
-
+<br />
+<p id="hint" style="clear: both;">Write Automaton JSON description code inside the editor to change it live:</p>
 <pre id="editor">{
 "comment":"the Stephen Wolfram's rule 30 automa",
 "cells":[
@@ -98,7 +105,6 @@ $(function(){
 		//let's add canvas to show the automata status
 		var running=false;
 		var ciclicCall=function(){
-				//$('#status').text("step number "+automa.steps+" last step changed "+automa.lastChanged+" cells, checking "+automa.lastTestedRules+" rules, cells are "+JSON.stringify(automa.cells)+" desc: "+automa.description);
 				if(running)return;
 				running=true;
 				automa.step();
