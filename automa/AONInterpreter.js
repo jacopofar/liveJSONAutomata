@@ -94,7 +94,7 @@ function Automata(w,h){
 	this.width=w;
 	//show some string message to the user
 	this.log=function(message){
-		if($('#console').text().length>50000) $('#console').html()='>><br />';
+		if($('#console').text().length>50000) $('#console').html('>><br />');
 		$('#console').append(message+"<br />");
 		$('#console').scrollTop($('#console')[0].scrollHeight);
 		//console.log(message);
@@ -166,7 +166,7 @@ function Automata(w,h){
 			//let's create the default cell sparse matrix
 			for(var x=-maxXdistance;x<=maxXdistance;x++){
 				for(var y=-maxYdistance;y<=maxYdistance;y++){
-					increaseCells[[cellCoord[0]+x,cellCoord[1]+y]]='default';
+					increaseCells[[cellCoord[0]+x,cellCoord[1]+y]]='';
 				}
 			}
 		}
@@ -193,12 +193,12 @@ function Automata(w,h){
 				cellCoord[1]=parseInt(cellCoord[1], 10);
 				var status=increaseCells[cellCoord];
 				if(!status)status='default';
+				if(status=='')status='default';
 				if(status!=matchStatus) continue;
 				//timerange and status are valid, let's look at neighbours
 				var applyThis=true;
-				for(var inr=0;inr<rule.neighbours.length;inr++){
+				for(var inr=0;inr<rule.neighbours.length && applyThis;inr++){
 					var nbond=rule.neighbours[inr];
-					if(!applyThis) break;
 					var nposx=cellCoord[0]+nbond.rpos[0];
 					var nposy=cellCoord[1]+nbond.rpos[1];
 					var neigh=this.getCellStatus(nposx,nposy);
@@ -206,7 +206,7 @@ function Automata(w,h){
 					if(!neigh) neigh='default';
 					if(neigh!=nbond.status)applyThis=false;
 				}
-					//if ApplyThis is still true, the rule has to be applied
+				//if ApplyThis is still true, the rule has to be applied
 				if(applyThis){
 					//this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newstatus+" as an effect of rule "+ID);
 					//WE DO NOT CHANGE THE STATUS HERE, or it could affect other rules evaluation
@@ -220,7 +220,7 @@ function Automata(w,h){
 		//update all cells
 		for(var i=0;i<updcoordx.length;i++)
 			this.setCellStatus(updcoordx[i],updcoordy[i],upstatuses[i]);
-		this.log("step number "+this.steps+", changed: "+updcoordx.length+" non-default cells: "+cellCoords.length);
+		this.log("step number "+this.steps+", changed: "+updcoordx.length+" non-default cells: "+cellCoords.length+" -->"+JSON.stringify(updcoordx));
 	};
 	//bound a CSS color value to a cell status
 	this.setPalette=function(status,color){
