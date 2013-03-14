@@ -166,12 +166,18 @@ function Automata(w,h){
 			//let's create the default cell sparse matrix
 			for(var x=-maxXdistance;x<=maxXdistance;x++){
 				for(var y=-maxYdistance;y<=maxYdistance;y++){
-					increaseCells[[cellCoord[0]+x,cellCoord[1]+y]]='';
+					var nx=cellCoord[0]+x;
+					var ny=cellCoord[1]+y;
+					nx=nx%this.width;
+					ny=ny%this.height;
+					if(nx<0)nx=this.width+nx;
+					if(ny<0)nx=this.height+ny;
+					increaseCells[[nx,ny]]='';
 				}
 			}
 		}
 		//now increaseCells contains the default cells to be checked within the usual non-default cells
-		//let's add to increaseCells the real cells
+		//let's add to increaseCells the real cells. It will overwrite non-default cells
 		for (var coord in this.cells) { increaseCells[coord]=this.cells[coord];}
 		var updcoordx=[],updcoordy=[],upstatuses=[];
 		//alert(JSON.stringify(this));
@@ -220,7 +226,7 @@ function Automata(w,h){
 		//update all cells
 		for(var i=0;i<updcoordx.length;i++)
 			this.setCellStatus(updcoordx[i],updcoordy[i],upstatuses[i]);
-		this.log("step number "+this.steps+", changed: "+updcoordx.length+" non-default cells: "+cellCoords.length+" -->"+JSON.stringify(updcoordx));
+		this.log("step number "+this.steps+", changed: "+updcoordx.length+" non-default cells: "+cellCoords.length);
 	};
 	//bound a CSS color value to a cell status
 	this.setPalette=function(status,color){
