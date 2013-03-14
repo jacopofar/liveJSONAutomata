@@ -95,6 +95,7 @@ function Automata(w,h){
 	//show some string message to the user
 	this.log=function(message){
 		$('#console').append(message+"<br />");
+		//console.log(message);
 	};
 	
 	//get the cell status if defined. The automa grid is toroidal, it overlaps in every direction
@@ -122,7 +123,8 @@ function Automata(w,h){
 	
 	//calculate the new status applying the rules
 	this.step=function(){
-		this.log("step number "+this.steps+", cells: "+JSON.stringify(this.cells));
+		var cellCoords=Object.keys(this.cells);
+		this.log("step number "+this.steps+", cells: "+cellCoords.length);
 		this.steps++;
 		/*
 		 a rule is an object like this:
@@ -154,7 +156,7 @@ function Automata(w,h){
 		}
 		//now maxXdistance and maxYdistance givce the amount of default cells to generate
 		var increaseCells={};
-		var cellCoords=Object.keys(this.cells);
+
 		for(var cind=0;cind<cellCoords.length;cind++){
 			var cellCoord=cellCoords[cind].split(',');
 			cellCoord[0]=parseInt(cellCoord[0], 10);
@@ -205,7 +207,7 @@ function Automata(w,h){
 				}
 					//if ApplyThis is still true, the rule has to be applied
 				if(applyThis){
-					this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newstatus+" as an effect of rule "+ID);
+					//this.log("status of "+cellCoord[0]+","+cellCoord[1]+" set to "+rule.newstatus+" as an effect of rule "+ID);
 					//WE DO NOT CHANGE THE STATUS HERE, or it could affect other rules evaluation
 					//we save it to an array and apply all updates at the end to avoid conflicts
 					updcoordx.push(cellCoord[0]);
