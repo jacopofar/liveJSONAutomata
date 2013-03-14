@@ -94,7 +94,9 @@ function Automata(w,h){
 	this.width=w;
 	//show some string message to the user
 	this.log=function(message){
+		if($('#console').text().length>50000) $('#console').html()='>><br />';
 		$('#console').append(message+"<br />");
+		$('#console').scrollTop($('#console')[0].scrollHeight);
 		//console.log(message);
 	};
 	
@@ -124,7 +126,6 @@ function Automata(w,h){
 	//calculate the new status applying the rules
 	this.step=function(){
 		var cellCoords=Object.keys(this.cells);
-		this.log("step number "+this.steps+", cells: "+cellCoords.length);
 		this.steps++;
 		/*
 		 a rule is an object like this:
@@ -219,6 +220,7 @@ function Automata(w,h){
 		//update all cells
 		for(var i=0;i<updcoordx.length;i++)
 			this.setCellStatus(updcoordx[i],updcoordy[i],upstatuses[i]);
+		this.log("step number "+this.steps+", changed: "+updcoordx.length+" non-default cells: "+cellCoords.length);
 	};
 	//bound a CSS color value to a cell status
 	this.setPalette=function(status,color){

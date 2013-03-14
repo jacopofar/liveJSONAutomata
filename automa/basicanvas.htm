@@ -9,19 +9,22 @@
 	#editor {
 		clear: both;
 		margin: 2em;
-		height:300px;
+		height:500px;
 		top: 0;
 		bottom: 0;
 		left: 0;
 		right: 0;
+		border:1px solid red;
 	}
 	#console { 
 		overflow:auto;
 		float:right;
 		width:50%;
-		height:200px;
+		height:400px;
 		background:#EEE;
-		font-size: 60%;
+		font-size: 75%;
+		border:1px solid green;
+		padding:5px;
 	}
 	#target_canvas{
 		float:left;
@@ -39,6 +42,7 @@
 <script src="AONInterpreter.js"></script>
 <br />
 <p id="hint" style="clear: both;">Write Automaton JSON description code inside the editor to change it live:</p>
+<div id="editorbox">
 <pre id="editor">{
 "comment":"the Stephen Wolfram's rule 30 automa",
 "cells":[
@@ -75,6 +79,7 @@
 }
 ]
 }</pre>
+</div>
 <script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");

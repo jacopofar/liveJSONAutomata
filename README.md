@@ -22,17 +22,22 @@ The syntax is simple, see this example:
 	{"status":"default","color":"white","timerange":[1,2300]}
 ],
 "rules":[
-{"ID":"left",
-"timerange":[1,2300],
-"applyTo":"default",
-"neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
-"newstatus":"active cell"
-},
-{"ID":"right",
-"timerange":[1,2300],
-"applyTo":"default",
-"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
-"newstatus":"active cell"
+{
+	"ID":"left",
+	"timerange":[1,2300],
+	"applyTo":"default",
+	"neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
+	"newstatus":"active cell"},
+{
+	"ID":"right",
+	"timerange":[1,2300],
+	"applyTo":"default",
+	"neighbours":[
+		{"rpos":[-1,-1],"status":"default"},
+		{"rpos":[0,-1],"status":"default"},
+		{"rpos":[1,-1],"status":"active cell"}
+	],
+	"newstatus":"active cell"
 }
 
 ]
@@ -40,7 +45,6 @@ The syntax is simple, see this example:
 ```
 
 At each step, the code will be evaluated and applied.
-
 
 The `cell` key defines an array of cells with a status, in this case the status is `active cell` (you can use any character and whitespaces). Each cell has a timerange, in this case the cell will be created at step number `12` and removed at step number `2300`. Please note that the cell will not be changed when the line is not in the edit box. So, if you remove the line before the step 2300 the cell will stay there, and if you remove it before the step `12` it will never be created.
 
@@ -56,7 +60,6 @@ Turing completeness
 -------------------
 The automaton is Turing-complete. If we consider a row in the cell matrix as the strip of tape, cell statuses as Turing machine statuses and define rules changing a row based on the row above, we have a Turing machine where the N row represent the N step.
 The head of the machine can be represented with an ad-hoc a cell status or a set of cell statuses.
-
 
 License
 -------
