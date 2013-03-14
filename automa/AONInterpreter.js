@@ -101,11 +101,17 @@ function Automata(w,h){
 	this.getCellStatus=function(x,y){
 		x=x%this.width;
 		y=y%this.height;
+		if(x<0)x=this.width+x;
+		if(y<0)x=this.height+y;
 		return this.cells[[x,y]];
 	};
 	
 	//set the cell status. If the coordinates are outside the grid, they are translated using modulo
 	this.setCellStatus=function(x,y,status){
+		x=x%this.width;
+		y=y%this.height;
+		if(x<0)x=this.width+x;
+		if(y<0)x=this.height+y;
 		this.cells[[x%this.width,y%this.height]]=status;
 	};
 	
@@ -175,11 +181,11 @@ function Automata(w,h){
 			}
 			//the timerange is valid, let's iterate over cells with the desired status
 			var matchStatus=rule.applyTo;
-			for(var cind=0;cind<Object.keys(increaseCells).length;cind++){
-				var cellCoord=Object.keys(increaseCells)[cind].split(',');
+			var incCellCoords=Object.keys(increaseCells);
+			for(var cind=0;cind<incCellCoords.length;cind++){
+				var cellCoord=incCellCoords[cind].split(',');
 				cellCoord[0]=parseInt(cellCoord[0], 10);
 				cellCoord[1]=parseInt(cellCoord[1], 10);
-				
 				var status=increaseCells[cellCoord];
 				if(!status)status='default';
 				if(status!=matchStatus) continue;
@@ -187,7 +193,7 @@ function Automata(w,h){
 				var applyThis=true;
 				for(var inr=0;inr<rule.neighbours.length;inr++){
 					var nbond=rule.neighbours[inr];
-					if(!applyThis) continue;
+					if(!applyThis) break;
 					var nposx=cellCoord[0]+nbond.rpos[0];
 					var nposy=cellCoord[1]+nbond.rpos[1];
 					var neigh=this.getCellStatus(nposx,nposy);
@@ -227,13 +233,16 @@ function Automata(w,h){
 		var height=canvas.height;
 		//empty canvas region
 		ctx.fillStyle = this.getColor('default');
-		ctx.fillRect(0, 0, this.height, this.width);
+		ctx.fillRect(0, 0, this.width*2,this.height*2);
+		//use the minumum size, to not overflow
+		if(width>this.width) width=this.width;
+		if(height>this.height) height=this.height;
 		for(var x=0;x<width;x++){
 			for(var y=0;y<height;y++){
 				//alert("x: "+x+" y: "+y);
 				if(this.getCellStatus(x,y)){
 					ctx.fillStyle = this.getColor(this.getCellStatus(x,y));
-					ctx.fillRect(x, y, 1, 1);
+					ctx.fillRect(x*2, y*2, 2, 2);
 				}
 			}
 		}
