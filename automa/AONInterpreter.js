@@ -47,7 +47,7 @@ function AONexecute(code,automata,consoleselector){
 		for (var i = 0; i < cells.length; i++) {
 			//if there's a timerange and is not satisfied, skip this
 			if(cells[i].timerange){
-				if(cells[i].timerange[0]>automata.steps || cells[i].timerange[1]<automata.steps)
+				if(cells[i].timerange[0]>automata.steps || (cells[i].timerange[1]<automata.steps && cells[i].timerange[1]!=-1))
 					continue;
 			}
 			//the timerange, if present, is satisfied, so let's update the status
@@ -61,7 +61,7 @@ function AONexecute(code,automata,consoleselector){
 		for (var i = 0; i < palette.length; i++) {
 			//if there's a timerange and is not satisfied, skip this
 			if(palette[i].timerange){
-				if(palette[i].timerange[0]>automata.steps || palette[i].timerange[1]<automata.steps)
+				if(palette[i].timerange[0]>automata.steps || (palette[i].timerange[1]<automata.steps && palette[i].timerange[1]!=-1))
 					continue;
 			}
 			//the timerange, if present, is satisfied, so let's update the palette
@@ -73,6 +73,10 @@ function AONexecute(code,automata,consoleselector){
 	if(parsed.rules){
 		var rules=parsed.rules;
 		for (var i = 0; i < rules.length; i++) {
+			//avoid adding already expired rules
+			if(rules[i].timerange[1]<automata.steps && rules[i].timerange[1]!=-1){
+				continue;
+			}
 			//rules timerange is checked by the automata, here we add them in any case
 			automata.setRule(rules[i]);
 		}
@@ -187,8 +191,15 @@ function Automata(w,h){
 			var ID=rulesIDs[ir];
 			var rule=this.rules[ID];
 			if(rule.timerange){
-				if(rule.timerange[0]>this.steps || rule.timerange[1]<this.steps)
-					return;
+				if(rule.timerange[0]>this.steps || (rule.timerange[1]<this.steps && rule.timerange[1]!=-1)){
+					if(rule.timerange[1]<this.steps && rule.timerange[1]!=-1){
+						this.log("the rule "+ID+" has expired and was removed");
+						this.rules[ID]=undefined;
+						delete this.rules[ID];
+					}
+					continue;
+				}
+				
 			}
 			//the timerange is valid, let's iterate over cells with the desired status
 			var matchStatus=rule.applyTo;

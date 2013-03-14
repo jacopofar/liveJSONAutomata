@@ -57,25 +57,53 @@
 	{"status":"default","color":"white"}
 ],
 "rules":[
-{"ID":"left",
+{"ID":"left downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
-"newstatus":"active cell"
+"newstatus":"active cell",
+"timerange":[1,40]
 },
-{"ID":"right",
+{"ID":"right downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
-"newstatus":"active cell"
+"newstatus":"active cell",
+"timerange":[1,40]
 },
-{"ID":"center",
+{"ID":"center downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"default"}],
-"newstatus":"active cell"
+"newstatus":"active cell",
+"timerange":[1,40]
 },
-{"ID":"center and left",
+{"ID":"center and left downward",
 "applyTo":"default",
 "neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"active cell"}],
-"newstatus":"active cell"
+"newstatus":"active cell",
+"timerange":[1,40]
+},
+{"ID":"left upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"active cell"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell",
+"timerange":[41,-1]
+},
+{"ID":"right upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"active cell"}],
+"newstatus":"active cell",
+"timerange":[41,-1]
+},
+{"ID":"center upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell",
+"timerange":[41,-1]
+},
+{"ID":"center and left upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell"},{"rpos":[1,1],"status":"active cell"}],
+"newstatus":"active cell",
+"timerange":[41,-1]
 }
 ]
 }</pre>
