@@ -38,7 +38,6 @@
 <canvas id="target_canvas" width="600" height="400">
 </canvas>
 <div id="console"></div><br />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="AONInterpreter.js"></script>
 <br />
 <p id="hint" style="clear: both;">Write Automaton JSON description code inside the editor to change it live:</p>
@@ -131,10 +130,6 @@
 </script>
 
 <script type="text/javascript">
-if (typeof jQuery == 'undefined'){
-	window.alert("can't see jQuery, do you have a connection?");
-}
-
 //this function will be called when the automa code changes
 var compileRun=function(){
 	var currentCode=ace.edit("editor").getSession().getValue();
@@ -142,7 +137,7 @@ var compileRun=function(){
 	//ctx.fillText(ace.edit("editor").getSession().getValue(), 248, 43);
 };
 
-$(function(){
+window.onload = function(){
 	var canvas = document.getElementById('target_canvas');
 	//global variable to store the automata
 	automa=new Automata(300,200);
@@ -163,9 +158,9 @@ $(function(){
 			};
 		setInterval(ciclicCall,100);
 	} else {
-		alert("Canvas element not found. Are you using an old browser?");
+		alert("Canvas has no 'getContext'. Are you using an old browser?");
 	}
-});
+};
 </script>
 <span>The editor is based on the fantastic <a href="http://ace.ajax.org/">ACE editor</a>, using JSON mode</span>
 </body>

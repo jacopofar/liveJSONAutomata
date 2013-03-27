@@ -98,9 +98,10 @@ function Automata(w,h){
     this.width=w;
     //show some string message to the user
     this.log=function(message){
-        if($('#console').text().length>50000) $('#console').html('>><br />');
-        $('#console').append(message+"<br />");
-        $('#console').scrollTop($('#console')[0].scrollHeight);
+        var elem=document.getElementById('console');
+        if(elem.innerHTML.length>50000) elem.innerHTML='>><br />';
+        elem.innerHTML=elem.innerHTML+message+"<br />";
+        elem.scrollTop = elem.scrollHeight
         //console.log(message);
     };
     
