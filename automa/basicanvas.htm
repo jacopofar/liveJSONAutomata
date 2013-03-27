@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Cellular Automata executor</title>
+<style type="text/css" media="screen">
+	body{
+		background:#DDD;
+	}
+	#editor {
+		clear: both;
+		margin: 2em;
+		height:500px;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border:1px solid red;
+	}
+	#console { 
+		overflow:auto;
+		float:right;
+		width:50%;
+		height:400px;
+		background:#EEE;
+		font-size: 75%;
+		border:1px solid green;
+		padding:5px;
+	}
+	#target_canvas{
+		float:left;
+		border:1px solid blue;
+	}
+	
+</style>
+</head>
+<body>
+
+<canvas id="target_canvas" width="600" height="400">
+</canvas>
+<div id="console"></div><br />
+<script src="AONInterpreter.js"></script>
+<br />
+<p id="hint" style="clear: both;">Write Automaton JSON description code inside the editor to change it live:</p>
+<div id="editorbox">
+<pre id="editor">{
+"comment":"the Stephen Wolfram's rule 30 automa, with animations",
+"cells":[
+	{"x":150,"y":20,"status":"active cell","timerange":[1,10]},
+	{"x":110,"y":20,"status":"active cell","timerange":[1,10]},
+	{"x":130,"y":180,"status":"active cell","timerange":[1,10]},
+	{"x":130,"y":120,"status":"active cell 2","timerange":[80,-1]}
+],
+"palette":[
+	{"status":"active cell","color":"#FF1010","timerange":[1,20]},
+	{"status":"active cell","color":"#008302","timerange":[21,40]},
+	{"status":"active cell","color":"#FF2EF3","timerange":[41,9000]},
+	{"status":"active cell 2","color":"#FAB500"},
+	{"status":"hole","color":"#000000"},
+	{"status":"default","color":"white"}
+],
+"rules":[
+{"ID":"left downward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"active cell"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"default"}],
+"newstatus":"active cell",
+"timerange":[1,80]
+},
+{"ID":"right downward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"default"},{"rpos":[1,-1],"status":"active cell"}],
+"newstatus":"active cell",
+"timerange":[1,80]
+},
+{"ID":"center downward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"default"}],
+"newstatus":"active cell",
+"timerange":[1,80]
+},
+{"ID":"center and left downward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,-1],"status":"default"},{"rpos":[0,-1],"status":"active cell"},{"rpos":[1,-1],"status":"active cell"}],
+"newstatus":"active cell",
+"timerange":[1,80]
+},
+{"ID":"seeder for the second phase",
+"applyTo":"default",
+"neighbours":[{"rpos":[0,3],"status":"active cell"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
+},
+{"ID":"left upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"active cell 2"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
+},
+{"ID":"right upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"default"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
+},
+{"ID":"center upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell 2"},{"rpos":[1,1],"status":"default"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
+},
+{"ID":"center and left upward",
+"applyTo":"default",
+"neighbours":[{"rpos":[-1,1],"status":"default"},{"rpos":[0,1],"status":"active cell 2"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"active cell 2",
+"timerange":[41,-1]
+},
+{"ID":"create hole",
+"applyTo":"active cell 2",
+"neighbours":[{"rpos":[-1,1],"status":"active cell 2"},{"rpos":[-1,-1],"status":"active cell 2"},{"rpos":[-1,-1],"status":"active cell 2"},{"rpos":[1,1],"status":"active cell 2"}],
+"newstatus":"hole",
+"timerange":[100,-1]
+}
+]
+}</pre>
+</div>
+<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    //editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/json");
+</script>
+
+<script type="text/javascript">
+//this function will be called when the automa code changes
+var compileRun=function(){
+	var currentCode=ace.edit("editor").getSession().getValue();
+	AONexecute(currentCode,automa,'#console');
+	//ctx.fillText(ace.edit("editor").getSession().getValue(), 248, 43);
+};
+
+window.onload = function(){
+	var canvas = document.getElementById('target_canvas');
+	//global variable to store the automata
+	automa=new Automata(300,200);
+	compileRun();
+	if (canvas.getContext){
+		//let's add a listener for editor content changes
+		var editsession = ace.edit("editor").getSession().addEventListener('change',compileRun);
+		//let's add canvas to show the automata status
+		var running=false;
+		var ciclicCall=function(){
+				if(running)return;
+				running=true;
+				automa.step();
+				document.title='Step '+automa.steps+' of JSON live automaton';
+				automa.canvasDump(canvas);
+				compileRun();
+				running=false;
+			};
+		setInterval(ciclicCall,100);
+	} else {
+		alert("Canvas has no 'getContext'. Are you using an old browser?");
+	}
+};
+</script>
+<span>The editor is based on the fantastic <a href="http://ace.ajax.org/">ACE editor</a>, using JSON mode</span>
+</body>
+</html>
