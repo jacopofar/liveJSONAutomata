@@ -9,6 +9,12 @@ A cellular automaton is a grid of cells where each cell has a *status* and there
 This script uses a cellular automaton description in a JSON object, and calculate it step after step.
 Not only you can write rules in a glance using a simple JSON syntax, but you can change them __live__, that is, if you change a rule in the text area it will be applied to the current automaton, with the current cell statuses. You can both add rules and update already existing ones.
 
+How to run
+----------
+
+Copy the *automa* folder, or clone the entire repository, then open the file *basicanvas.htm*. It has been tested in the latest versisons of Chrome and Firefox and it works both from a webserver and from the local filesystem. You need the folder *src-noconflict* for the JSON editor, it contains also the files for other languages and various theme, is the original *Ace* library from *Ajax.org*.
+
+
 JSON syntax
 -----------
 The syntax is simple, see this example:
@@ -67,7 +73,7 @@ License
 -------
 The code is released under BSD license, you can freely use, copy, study and modify it as defined in the note inside the script.
 
-The JSON editor is based on ACE AJAX editor, see http://ace.ajax.org/ 
+The embedded JSON editor is based on ACE AJAX editor, see http://ace.ajax.org/ 
 
 TODO
 ----
