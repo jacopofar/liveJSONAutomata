@@ -12,6 +12,9 @@ The news is that not only you can write rules in a glance using a simple JSON sy
 
 How to run
 ----------
+You can try it __[here](http://htmlpreview.github.com/?https://github.com/jacopofar/liveJSONAutomata/blob/master/automa/basicanvas.htm)__!
+
+If you want to run it locally:
 
 Copy the *automa* folder, or clone the entire repository, then open the file *basicanvas.htm*. It has been tested in the latest versions of Chrome and Firefox and it works both from a webserver and from the local filesystem.
 You need the folder *src-noconflict* for the embedded JSON editor, it contains also the files for other languages and various theme, is the original *Ace* library from *Ajax.org*.
