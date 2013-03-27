@@ -6,13 +6,15 @@ An in-browser cellular automaton simulator able to change rules on the fly, made
 ![alt text](https://raw.github.com/jacopofar/liveJSONAutomata/master/screenshots/Screenshot%20from%202013-03-14%2022:26:13.png "The running application")
 
 A cellular automaton is a grid of cells where each cell has a *status* and there are some rules to change the status of a cell based on the statuses of neighbours and of the cell itself, in a discrete time.
-This script uses a cellular automaton description in a JSON object, and calculate it step after step.
-Not only you can write rules in a glance using a simple JSON syntax, but you can change them __live__, that is, if you change a rule in the text area it will be applied to the current automaton, with the current cell statuses. You can both add rules and update already existing ones.
+
+This script takes a cellular automaton rules description in a JSON object, among other data like initial statuses and color palette, then calculate and display it step after step.
+The news is that not only you can write rules in a glance using a simple JSON syntax, but you can change them __live__, that is, if you change a rule in the text area it will be applied to the current automaton, with the current cell statuses. You can both add rules and update already existing ones. Even palette and cell statuses can be changed this way, you can even define a time range to plan the activation of these settings over time.
 
 How to run
 ----------
 
 Copy the *automa* folder, or clone the entire repository, then open the file *basicanvas.htm*. It has been tested in the latest versisons of Chrome and Firefox and it works both from a webserver and from the local filesystem. You need the folder *src-noconflict* for the JSON editor, it contains also the files for other languages and various theme, is the original *Ace* library from *Ajax.org*.
+__NOTE__: previous versions required to be online to load jQuery Google CDN, now it has been removed using pure JavaScript
 
 
 JSON syntax
